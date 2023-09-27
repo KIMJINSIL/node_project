@@ -1,0 +1,49 @@
+<footer class="footer">
+    <ul>
+        <li>
+            <a href="/">
+                <i class="fas fa-home"></i>
+                <p>메인</p>
+            </a>
+        </li>
+        <li>
+            <a href="/introduce">
+                <i class="fas fa-book"></i>
+                <p>소개</p>
+            </a>
+        </li>
+        <li>
+            <a href="/course">
+                <i class="fas fa-road"></i>
+                <p>코스</p>
+            </a>
+        </li>
+        <li>
+            <a href="/qr">
+                <i class="fas fa-qrcode"></i>
+                <p>QR</p>
+            </a>
+        </li>
+        <li>
+            <a href="/profile">
+                <i class="fas fa-user-alt"></i>
+                <p>프로필</p>
+            </a>
+        </li>
+    </ul>
+</footer>
+
+<script>
+    const addClickStyle = () => {
+        const currentPath = window.location.pathname;
+        const links = document.querySelectorAll(".footer ul li a")
+        links.forEach((link) => {
+            if(link.getAttribute("href")=== currentPath){
+                link.parentElement.classList.add("on");
+            }
+        })
+    }
+
+    document.addEventListener("DOMContentLoaded", addClickStyle)
+</script>
+

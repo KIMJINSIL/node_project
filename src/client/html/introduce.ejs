@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <%- include("./common") %>
-    소개페이지
-</body>
-</html>
+<%- include('common/header.ejs') %>
+
+    <div class="container empty-background">
+        <nav class="nav">
+            <p class="title">테스트 여행</p>
+            <div class="sub-title">소개</div>
+        </nav>
+        <div class="content-container">
+            <div class="introduce-title-wrap">테스트 여행 소개합니다</div>
+        </div>
+    </div>
+
+<%- include('common/footer.ejs') %>

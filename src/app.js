@@ -1,4 +1,7 @@
 import express from "express";
+import viewRouter from "./router/viewRouter";
+import apiRouter from "./router/apiRouter";
+
 
 const app = express();
 
@@ -20,16 +23,23 @@ app.set("view engine", "ejs");
 app.set("views", process.cwd()+"/src/client/html")
 // console.log(process.cwd());
 
-app.get("/", (req,res)=>{
-    const homeData = {
-        data: [{name:"철수"},{name:"영희"},{name:"민수"}],
-    }
-    res.render("home", homeData);
-});
+app.use("/api", apiRouter);
+app.use("/", viewRouter);
 
-app.get("/introduce", (req,res)=>{
-    res.render("introduce")
-})
+app.use("/css", express.static("src/client/css"));
+app.use("/js", express.static("src/client/js"));
+app.use("/file", express.static("src/client/file"));
+
+// app.get("/", (req,res)=>{
+//     const homeData = {
+//         data: [{name:"철수"},{name:"영희"},{name:"민수"}],
+//     }
+//     res.render("home", homeData);
+// });
+
+// app.get("/introduce", (req,res)=>{
+//     res.render("introduce")
+// })
 
 app.listen(8080,()=>{
     console.info("8080포트서버 열림 http://localhost:8080");

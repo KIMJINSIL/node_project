@@ -1,0 +1,19 @@
+<%- include('common/header.ejs') %>
+
+    <div class="container empty-background">
+        <nav class="nav">
+            <p class="title">테스트 여행</p>
+            <div class="sub-title">코스 리스트</div>
+        </nav>
+        <div  class="content-container">
+            <ul id="courseWrap" class="course-nav-ul"></ul>
+            <div id="location-map"></div>
+        </div>
+    </div>
+
+    
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=49b0739806538a18ff82230b4b557613"></script>
+    <script src="../js/course.js"></script>
+    
+
+<%- include('common/footer.ejs') %>
