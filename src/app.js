@@ -1,3 +1,6 @@
+import "dotenv/config";
+import "regenerator-runtime"; //async await을 사용하기 위한 문법 - 노드 14버전 기준으로
+
 import express from "express";
 import viewRouter from "./router/viewRouter";
 import apiRouter from "./router/apiRouter";
