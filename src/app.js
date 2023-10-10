@@ -26,6 +26,10 @@ app.set("view engine", "ejs");
 app.set("views", process.cwd()+"/src/client/html")
 // console.log(process.cwd());
 
+//json 데이터 파싱 미들웨어
+app.use(express.json());
+
+
 app.use("/api", apiRouter);
 app.use("/", viewRouter);
 
@@ -44,8 +48,8 @@ app.use("/file", express.static("src/client/file"));
 //     res.render("introduce")
 // })
 
-app.listen(8080,()=>{
-    console.info("8080포트서버 열림 http://localhost:8080");
+app.listen(8081,()=>{
+    console.info("8081포트서버 열림 http://localhost:8081");
 }) //서버를 8080포트로 여는데, 열고나면 뒤에거 실행시켜줘
 
 
