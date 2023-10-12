@@ -16,13 +16,13 @@ export const getCourseList = async (req,res) => {
     const courseList = await db.execute(QUERY, [userId]).then((result)=>result[0])
     res.json(courseList);
 
-    console.log(courseList)
+    // console.log(courseList)
 }
 // controller => service(중요한 처리들) => repository
 
 export const qrCheck = async (req,res) => {
     //TODO 임의로 유저 데이터 만듦(테스트용)
-    const userId = 1;
+    const userId = req.user.user_id;
 
     const qrInfoData = req.body;
     console.log(qrInfoData.qrCode)
@@ -31,7 +31,7 @@ export const qrCheck = async (req,res) => {
         SELECT * FROM course WHERE course_qr = ?
      `
     const course = await db.execute(QUERY1, [req.body.qrCode]).then((result)=>result[0][0]);
-    if(!course) return res.status(400).json({status:"not qrCode"})
+    if(!course) return res.status(400).json({status:"올바른 qr 코드가 아닙니다."})
 
     //검증코드 2 : 해당유저가 이 코스에 방문한 적이 있는지
     const QUERY2 = `
@@ -39,12 +39,19 @@ export const qrCheck = async (req,res) => {
      `
     const userVisited = await db.execute(QUERY2, [userId, course.course_id]).then((result)=>result[0][0]);
 
-    if(userVisited) return res.status(400).json({status:"already visited"});
+    if(userVisited) return res.status(400).json({status:"이미 방문한 장소입니다."});
 
     console.log("성공");
 
     //검증코드 3(수학): 반경 100내에 있을때만 qr코드 찍을 수 있음(선택사항)
     calculateDistance(qrInfoData.latitude, qrInfoData.longitude, course.latitude, course.longitude)
+    if (dist > 100) return response.status(400).json({ status: "거리가 너무 멉니다." });
+
+    // 방문완료 - 데이터베이스에 추가
+  const QUERY3 = `INSERT INTO users_course (user_id, course_id) VALUES (?,?)`
+  await db.execute(QUERY3, [userId, course.course_id]);
+  return response.status(201).json({ status: "success" });
+
 }
 
 const calculateDistance = (currentLat, currentLon, targetLat, targetLon) => {

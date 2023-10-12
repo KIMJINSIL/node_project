@@ -16,6 +16,10 @@ const getCurrentPosition = () => {
 
 const courseCheckFetch = async (qrCode) => {
     //TODO 로그인 여부 체크 
+    const accessToken = localStorage.getItem("accessToken");
+    if(!accessToken){
+        window.location.href = "/login?error=need_login";
+    }
 
     //qrCode 올바른 데이터인지
     if(!qrCode){
@@ -40,7 +44,7 @@ const courseCheckFetch = async (qrCode) => {
         headers: {
             'Content-type': 'application/json',
             Accept : 'applicatoin/json',
-            //TODO 로그인 토큰
+            Authorization : `Bearer ${accessToken}`
         }, 
         body: JSON.stringify({
             qrCode : qrCode,
@@ -48,6 +52,22 @@ const courseCheckFetch = async (qrCode) => {
             longitude : coords.longitude,
         })
     })
+    const result = await response.json();
+
+    if(response.status === 201){
+        msgAlert("center", "방문 완료", "success");
+        return setTimeout(()=>{
+            window.location.href = "/course";
+        }, 3000)
+    }else if(response.status === 401){
+        msgAlert("center", result.status, "error");
+        return setTimeout(()=>{
+            window.location.href = "/login?error=need_login";
+        }, 3000)
+    }else{
+        msgAlert("center", result.status, "error");
+    }
+    setTimeout(startScane, 3000);
 }
 
 const startScane = () => {

@@ -41,12 +41,12 @@ const panTo = (latitude, longitude) => {
 }
 
 //코스 마커 그리기
-const addCourseMaker = (data) =>  {
-    let markerImage = "/file/map_not_done.png";
+const addCourseMarker = (data) =>  {
+    let markerImage = "../file/map_not_done.png";
     let markerSize = new kakao.maps.Size(24, 35);
 
     if (data.users_course_id) {
-        markerImage = "/file/map_complete.jpg";
+        markerImage = "../file/map_complete.jpg";
         markerSize = new kakao.maps.Size(24, 35);
     }
 
@@ -121,7 +121,7 @@ const makeNavigationHtml = () => {
     for(let i = 0; i < courseListInfo.length; i++){
         html += `<li class="course" onclick="clickCourseList(event, ${courseListInfo[i].course_id})">`
         if(courseListInfo[i].users_course_id){
-            html += `<div class="mark-wrap"><img src="/file/complete.png"/></div>`
+            html += `<div class="mark-wrap"><img src="../file/complete.png"/></div>`
         }
         html += `<p>${courseListInfo[i].course_name}</p>`
         html += `</li>`
@@ -139,7 +139,19 @@ const afterGetCourseList = () => {
 
 //백엔드 서버로 코스정보 요청
 const getCourseListFetch = async () => {
-    const response = await fetch("/api/courses");
+    const accessToken = localStorage.getItem("accessToken");
+    if(!accessToken){
+        window.location.href = "/login?error=need_login";
+    }
+
+    const response = await fetch("/api/courses", {
+        headers: {
+            Authorization : `Bearer ${accessToken}`
+        }
+    });
+    if(response.status === 401){
+        return window.location.href = "/login?error=need_login";
+    }
     if (response.status === 200) {
       console.log("getCourseList api 연동 성공");
       const result = await response.json();
